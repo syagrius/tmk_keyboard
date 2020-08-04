@@ -46,7 +46,7 @@ const action_t actionmaps[][UNIMAP_ROWS][UNIMAP_COLS] PROGMEM = {
     TAB, Q,   W,   E,   R,   T,   Y,   U,   I,   O,   P,   LBRC,RBRC,     BSLS,     DEL, END, PGDN,    P7,  P8,  P9,  PPLS,
     CAPS,A,   S,   D,   F,   G,   H,   J,   K,   L,   SCLN,QUOT,     NUHS, FN0,                        P4,  P5,  P6,  PCMM, // FN0<->ENT
     LSFT,NUBS,Z,   X,   C,   V,   B,   N,   M,   COMM,DOT, SLSH,     RO,  RSFT,          UP,           P1,  P2,  P3,  PENT,
-    LCTL,LGUI,LALT,MHEN,          SPC,           HENK,KANA,RALT,RGUI,FN0, RCTL,     LEFT,DOWN,RGHT,    HELLO,  PDOT,  PEQL  // HELLO prepended to AC_HELLO // P0, PDOT, PEQL
+    LCTL,LGUI,LALT,MHEN,          SPC,           HENK,KANA,RALT,RGUI,FN0, RCTL,     LEFT,DOWN,RGHT,    HELLO,  PDOT,  PEQL  // HELLO prepended to AC_HELLO // original sequence was: P0, PDOT, PEQL
     ),
     UNIMAP(
               TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,
@@ -55,7 +55,7 @@ const action_t actionmaps[][UNIMAP_ROWS][UNIMAP_COLS] PROGMEM = {
     TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,PSCR,SLCK,PAUS,UP,  INS,      TRNS,     TRNS,TRNS,TRNS,    F17 ,F18, F19,TRNS,
     TRNS,VOLD,VOLU,MUTE,TRNS,TRNS,TRNS,TRNS,HOME,PGUP,LEFT,RGHT,     TRNS,TRNS,                        F24 ,F15, F16 ,TRNS,
     TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,END, PGDN,DOWN,     TRNS,TRNS,          PGUP,         F21 ,F22 ,F23 ,TRNS,
-    TRNS,TRNS,TRNS,TRNS,          TRNS,          TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,     HOME,PGDN,END,     P0,  PDOT,  PEQL
+    TRNS,TRNS,TRNS,TRNS,          TRNS,          TRNS,TRNS,TRNS,TRNS,TRNS,TRNS,     HOME,PGDN,END,     F20,  PDOT,  PEQL     // original sequence: P0, PDOT, PEQL
     ),
 };
 
@@ -74,14 +74,10 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt)
     switch (id) {
         case SAY_HELLO:
         xprintf("count %d interrupt: %d\n",record->tap.count,record->tap.interrupted);
-
         if (record->event.pressed) {            
             // Si on reste appuyé on passe ce-dessous
             if ((record->tap.count <= 0) || (record->tap.interrupted))
-            {
                 return(MACRO( I(0), T(P3), END ));
-            }
-        
             
             // tap detected
             if ((record->tap.count > 2) && !(record->tap.interrupted))
